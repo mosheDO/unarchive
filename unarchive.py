@@ -2,6 +2,7 @@ import os
 import zipfile
 import tarfile
 import gzip
+import rarfile  # Make sure to install `rarfile` package (`pip install rarfile`)
 import shutil
 import argparse
 
@@ -55,6 +56,12 @@ class GzipExtractor(ArchiveExtractor):
             if extractor:
                 extractor.extract()
 
+class RarExtractor(ArchiveExtractor):
+    def _extract(self):
+        with rarfile.RarFile(self.file_path, 'r') as rar_ref:
+            rar_ref.extractall(self.extract_path)
+        print(f"Extracted RAR file to {self.extract_path}")
+        
 def identify_and_create_extractor(file_path):
     if zipfile.is_zipfile(file_path):
         return ZipExtractor(file_path)
@@ -62,6 +69,8 @@ def identify_and_create_extractor(file_path):
         return TarExtractor(file_path)
     elif is_gzip(file_path):
         return GzipExtractor(file_path)
+    elif rarfile.is_rarfile(file_path):
+        return RarExtractor(file_path)
     else:
         return None
 
