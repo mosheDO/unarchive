@@ -85,7 +85,7 @@ def is_gzip(file_path):
         return False
 
 def main():
-    parser = argparse.ArgumentParser(description="Extract various types of archives.")
+    parser = argparse.ArgumentParser(description="Extract various types of archives. This script supports the following archive formats: 7z, tar, xz, zip, and rar.")
     parser.add_argument('file_path', type=str, help="The path to the archive file to be extracted.")
     args = parser.parse_args()
 
